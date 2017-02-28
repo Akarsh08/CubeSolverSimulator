@@ -346,6 +346,11 @@ public class Main extends javax.swing.JFrame {
         });
 
         jButton16.setText("Capture Input form Camera");
+        jButton16.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton16ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -526,6 +531,11 @@ public class Main extends javax.swing.JFrame {
         buf=jTextArea1.getText();
         execSequence();
     }//GEN-LAST:event_jButton15ActionPerformed
+
+    private void jButton16ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton16ActionPerformed
+        vi=new VisualInputForm();
+        vi.setVisible(true);
+    }//GEN-LAST:event_jButton16ActionPerformed
 
     void F()
     {
@@ -2698,7 +2708,7 @@ public class Main extends javax.swing.JFrame {
     // Grid Declaration
     Grid grd;
     //Visual Input -- Webcam Unit
-    //VisualInput vi;
+    VisualInputForm vi;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton10;
