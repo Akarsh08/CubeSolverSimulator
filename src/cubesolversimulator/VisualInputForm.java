@@ -365,11 +365,11 @@ public class VisualInputForm extends javax.swing.JFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         try {
             frame=cam.getImage();
-            ImageIO.write(frame, "jpg",new File("C:\\Users\\Akarsh\\Documents\\NetBeansProjects\\VisualInput\\IMG_01.jpg"));
-            orig=Highgui.imread("C:\\Users\\Akarsh\\Documents\\NetBeansProjects\\VisualInput\\IMG_01.jpg");
+            ImageIO.write(frame, "jpg",new File("D:\\Project_work\\CubeSolverSimulator\\IMG_01.jpg"));
+            orig=Highgui.imread("D:\\Project_work\\CubeSolverSimulator\\IMG_01.jpg");
             
             img.setSize(jPanel6.getSize());
-            image=new ImageIcon(new ImageIcon("C:\\Users\\Akarsh\\Documents\\NetBeansProjects\\VisualInput\\IMG_01.jpg").getImage().getScaledInstance(img.getWidth(), img.getHeight(), Image.SCALE_FAST));
+            image=new ImageIcon(new ImageIcon("D:\\Project_work\\CubeSolverSimulator\\IMG_01.jpg").getImage().getScaledInstance(img.getWidth(), img.getHeight(), Image.SCALE_FAST));
             img.setIcon(image);
             img.repaint();
             jPanel6.add(img);
@@ -449,7 +449,7 @@ public class VisualInputForm extends javax.swing.JFrame {
         Highgui.imwrite("blured.jpg", blured);
         img1 = new JLabel("");
         img1.setSize(jPanel4.getSize());
-        image1=new ImageIcon(new ImageIcon("C:\\Users\\Akarsh\\Documents\\NetBeansProjects\\VisualInput\\blured.jpg").getImage().getScaledInstance(img1.getWidth(), img1.getHeight(), Image.SCALE_FAST));
+        image1=new ImageIcon(new ImageIcon("D:\\Project_work\\CubeSolverSimulator\\blured.jpg").getImage().getScaledInstance(img1.getWidth(), img1.getHeight(), Image.SCALE_FAST));
         img1.setIcon(image1);
         img1.repaint();
         jPanel4.add(img1);
@@ -461,7 +461,7 @@ public class VisualInputForm extends javax.swing.JFrame {
         Highgui.imwrite("gray.jpg", gray);
         img2=new JLabel("");
         img2.setSize(jPanel5.getSize());
-        image2=new ImageIcon(new ImageIcon("C:\\Users\\Akarsh\\Documents\\NetBeansProjects\\VisualInput\\gray.jpg").getImage().getScaledInstance(img2.getWidth(), img2.getHeight(), Image.SCALE_FAST));
+        image2=new ImageIcon(new ImageIcon("D:\\Project_work\\CubeSolverSimulator\\gray.jpg").getImage().getScaledInstance(img2.getWidth(), img2.getHeight(), Image.SCALE_FAST));
         img2.setIcon(image2);
         img2.repaint();
         jPanel5.add(img2);
@@ -473,7 +473,7 @@ public class VisualInputForm extends javax.swing.JFrame {
         Highgui.imwrite("edge.jpg", edge);
         img3=new JLabel("");
         img3.setSize(jPanel3.getSize());
-        image3=new ImageIcon(new ImageIcon("C:\\Users\\Akarsh\\Documents\\NetBeansProjects\\VisualInput\\edge.jpg").getImage().getScaledInstance(img3.getWidth(), img3.getHeight(), Image.SCALE_FAST));
+        image3=new ImageIcon(new ImageIcon("D:\\Project_work\\CubeSolverSimulator\\edge.jpg").getImage().getScaledInstance(img3.getWidth(), img3.getHeight(), Image.SCALE_FAST));
         img3.setIcon(image3);
         img3.repaint();
         jPanel3.add(img3);
@@ -497,7 +497,7 @@ public class VisualInputForm extends javax.swing.JFrame {
         
         img4= new JLabel("");
         img4.setSize(jPanel7.getSize());
-        image4=new ImageIcon(new ImageIcon("C:\\Users\\Akarsh\\Documents\\NetBeansProjects\\VisualInput\\dilate.jpg").getImage().getScaledInstance(img4.getWidth(), img4.getHeight(), Image.SCALE_FAST));
+        image4=new ImageIcon(new ImageIcon("D:\\Project_work\\CubeSolverSimulator\\dilate.jpg").getImage().getScaledInstance(img4.getWidth(), img4.getHeight(), Image.SCALE_FAST));
         img4.setIcon(image4);
         img4.repaint();
         jPanel7.add(img4);        
@@ -555,14 +555,47 @@ public class VisualInputForm extends javax.swing.JFrame {
         
         img5= new JLabel("");
         img5.setSize(jPanel2.getSize());
-        image5=new ImageIcon(new ImageIcon("C:\\Users\\Akarsh\\Documents\\NetBeansProjects\\VisualInput\\filteredrect.jpg").getImage().getScaledInstance(img5.getWidth(), img5.getHeight(), Image.SCALE_FAST));
+        image5=new ImageIcon(new ImageIcon("D:\\Project_work\\CubeSolverSimulator\\filteredrect.jpg").getImage().getScaledInstance(img5.getWidth(), img5.getHeight(), Image.SCALE_FAST));
         img5.setIcon(image5);
         img5.repaint();
         jPanel2.add(img5);  
         jPanel2.repaint();
+        
+        reorderContours(roi);
         findAvg(roi);
     }
 
+    private void reorderContours(List<Rect> roi) {
+        Rect temp=new Rect();
+        for(int i=0;(i<roi.size()-1);i++)
+        {
+            for(int j=0;j<(roi.size()-1);j++)
+            {
+                if(roi.get(j).y > roi.get(j+1).y)
+                {
+                    temp=roi.get(j);
+                    roi.set(j, roi.get(j+1));
+                    roi.set(j+1, temp);
+                }
+            }
+        }
+        for(int i=0;i<(roi.size()/3);i++)
+        {
+            for(int j=(i*3);j<(i+1)*3;j++)
+            {
+                for(int k=(i*3);k<((i+1)*3)-1;k++)
+                {
+                    if(roi.get(k).x > roi.get(k+1).x)
+                    {
+                        temp=roi.get(k);
+                        roi.set(k, roi.get(k+1));
+                        roi.set(k+1, temp);
+                    }
+                }
+            }
+        }
+    }
+    
     private void findAvg(List<Rect> roi) {
         for(int i=0;i<roi.size();i++){
             Mat ri=new Mat(blured, roi.get(i));
@@ -603,5 +636,5 @@ public class VisualInputForm extends javax.swing.JFrame {
         }
         System.out.println(col);        
     }        
-    
+
 }

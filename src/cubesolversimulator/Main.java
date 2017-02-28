@@ -2698,7 +2698,7 @@ public class Main extends javax.swing.JFrame {
     // Grid Declaration
     Grid grd;
     //Visual Input -- Webcam Unit
-    VisualInput vi;
+    //VisualInput vi;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton10;
