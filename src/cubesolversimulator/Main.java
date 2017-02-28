@@ -534,7 +534,7 @@ public class Main extends javax.swing.JFrame {
 
     private void jButton16ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton16ActionPerformed
         vi=new VisualInputForm();
-        vi.setVisible(true);
+        vi.setVisible(true);                
     }//GEN-LAST:event_jButton16ActionPerformed
 
     void F()
