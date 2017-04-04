@@ -2735,7 +2735,7 @@ public class Main extends javax.swing.JFrame {
     boolean crossComplete=false, cornerComplete=false, midComplete=false, bottomCrossComplete=false;
     boolean bottomCornerComplete=false, sideCornerComplete=false, sideEdgeComplete=false;
     // Array Declarations
-    Color[][] G, W, B, Y, O, R;
+    public static Color[][] G, W, B, Y, O, R;
     // Temporary variable
     Color[] Src;
     // Grid Declaration

@@ -768,5 +768,6 @@ public class VisualInputForm extends javax.swing.JFrame {
         jLabel15.setText(colors[cols[6]]);        
         jLabel16.setText(colors[cols[7]]);
         jLabel17.setText(colors[cols[8]]);
+        DataBridge.setMedium(cols);
     }
 }
