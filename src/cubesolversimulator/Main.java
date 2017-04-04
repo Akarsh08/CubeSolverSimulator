@@ -382,6 +382,11 @@ public class Main extends javax.swing.JFrame {
         jButton17.setBackground(new java.awt.Color(153, 204, 255));
         jButton17.setFont(new java.awt.Font("Courier New", 1, 16)); // NOI18N
         jButton17.setText("Setup Cube");
+        jButton17.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton17ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -569,6 +574,10 @@ public class Main extends javax.swing.JFrame {
         vi=new VisualInputForm();
         vi.setVisible(true);           
     }//GEN-LAST:event_jButton16ActionPerformed
+
+    private void jButton17ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton17ActionPerformed
+        grd.repaint();
+    }//GEN-LAST:event_jButton17ActionPerformed
 
     void F()
     {
@@ -2738,6 +2747,7 @@ public class Main extends javax.swing.JFrame {
     public static Color[][] G, W, B, Y, O, R;
     // Temporary variable
     Color[] Src;
+    public static int faceCount=0;
     // Grid Declaration
     Grid grd;
     //Visual Input -- Webcam Unit

@@ -47,6 +47,7 @@ public class DataBridge {
                        for(int j=0;j<3;j++,k++)
                        {
                            Main.B[i][j]=mid[k];
+                           System.out.println(Main.B[i][j]);
                        }                       
                    }
                    break;
@@ -55,6 +56,7 @@ public class DataBridge {
                        for(int j=0;j<3;j++,k++)
                        {
                            Main.G[i][j]=mid[k];
+                           System.out.println(Main.G[i][j]);
                        }                       
                    }
                    break;
@@ -63,6 +65,7 @@ public class DataBridge {
                        for(int j=0;j<3;j++,k++)
                        {
                            Main.R[i][j]=mid[k];
+                           System.out.println(Main.R[i][j]);
                        }                       
                    }
                    break;
@@ -71,6 +74,7 @@ public class DataBridge {
                        for(int j=0;j<3;j++,k++)
                        {
                            Main.Y[i][j]=mid[k];
+                           System.out.println(Main.Y[i][j]);
                        }                       
                    }
                    break;
@@ -79,6 +83,7 @@ public class DataBridge {
                        for(int j=0;j<3;j++,k++)
                        {
                            Main.O[i][j]=mid[k];
+                           System.out.println(Main.O[i][j]);
                        }                       
                    }
                    break;
@@ -87,10 +92,11 @@ public class DataBridge {
                        for(int j=0;j<3;j++,k++)
                        {
                            Main.W[i][j]=mid[k];
+                           System.out.println(Main.W[i][j]);
                        }                       
                    }
                    break;
             default: System.out.println("Error");
-        }  
+        }
     }
 }
