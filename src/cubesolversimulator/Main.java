@@ -577,6 +577,7 @@ public class Main extends javax.swing.JFrame {
 
     private void jButton17ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton17ActionPerformed
         grd.repaint();
+        this.repaint();
     }//GEN-LAST:event_jButton17ActionPerformed
 
     void F()
