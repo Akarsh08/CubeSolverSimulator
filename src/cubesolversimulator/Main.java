@@ -5,8 +5,26 @@
  */
 package cubesolversimulator;
 
+import gnu.io.CommPort;
+import gnu.io.CommPortIdentifier;
+import gnu.io.PortInUseException;
+import gnu.io.SerialPort;
+import gnu.io.SerialPortEvent;
+import gnu.io.SerialPortEventListener;
+import gnu.io.UnsupportedCommOperationException;
 import java.awt.Color;
 import java.awt.Graphics;
+import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.nio.charset.StandardCharsets;
+import java.util.Enumeration;
+import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -31,6 +49,14 @@ public class Main extends javax.swing.JFrame {
         
         //vi=new VisualInput();
         //add(vi.wp);        
+    }
+
+    private void executeArduino() {
+        try {
+            new SerialTest().arduino();
+        } catch (Exception ex) {
+            Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
     class Grid extends javax.swing.JPanel
     {
@@ -174,6 +200,125 @@ public class Main extends javax.swing.JFrame {
             }
         }
     }
+    
+    public class SerialTest implements SerialPortEventListener {        
+   
+    private SerialPort serialPort ;         //defining serial port object
+    private CommPortIdentifier portId  = null;       //my COM port
+    private static final int TIME_OUT = 2000;    //time in milliseconds
+    private static final int BAUD_RATE = 9600; //baud rate to 9600bps
+    private BufferedReader input;               //declaring my input buffer
+    private OutputStream output;                //declaring output stream
+    private String name;        //user input name string
+    Scanner inputName;          //user input name    
+    //method initialize
+    private void initialize(){
+        CommPortIdentifier ports = null;      //to browse through each port identified
+        Enumeration portEnum = CommPortIdentifier.getPortIdentifiers(); //store all available ports
+        while(portEnum.hasMoreElements()){  //browse through available ports
+             ports = (CommPortIdentifier)portEnum.nextElement();
+             //following line checks whether there is the port i am looking for and whether it is serial
+             if(ports.getPortType() == CommPortIdentifier.PORT_SERIAL&&ports.getName().equals("COM3"))
+             { 
+                System.out.println("COM port found:COM3");
+                portId = ports;                  //initialize my port
+                break;
+             }           
+        }
+       //if serial port am looking for is not found
+        if(portId==null){
+            System.out.println("COM port not found");
+            //System.exit(1);
+        }
+        
+    }
+    
+    //end of initialize method
+    
+    //connect method
+   
+    private void portConnect(){
+        //connect to port
+        try{
+            serialPort = (SerialPort)portId.open(this.getClass().getName(),TIME_OUT);   //down cast the comm port to serial port
+            System.out.println("Port open succesful: COM3");   
+            //set serial port parameters
+            serialPort.setSerialPortParams(BAUD_RATE,SerialPort.DATABITS_8,SerialPort.STOPBITS_1,SerialPort.PARITY_NONE);
+        }
+        catch(PortInUseException e){
+            System.out.println("Port already in use");
+            System.exit(1);
+        }
+        catch(NullPointerException e2){
+            System.out.println("COM port maybe disconnected");
+        }
+        catch(UnsupportedCommOperationException e3){
+            System.out.println(e3.toString());
+        }
+       
+        //input and output channels
+        try{
+            //defining reader and output stream
+            input = new BufferedReader(new InputStreamReader(serialPort.getInputStream()));
+            output =  serialPort.getOutputStream();
+            //adding listeners to input and output streams
+            serialPort.addEventListener(this);
+            serialPort.notifyOnDataAvailable(true);
+            serialPort.notifyOnOutputEmpty(true);
+        }
+        catch(Exception e){
+            System.out.println(e.toString());
+        }
+        
+    }
+    
+    public void serialEvent(SerialPortEvent evt) { 
+   
+       if (evt.getEventType() == SerialPortEvent.DATA_AVAILABLE) { //if data available on serial port
+            try {                
+                String inputLine=input.readLine();
+                System.out.println(inputLine);
+                if(inputLine.equals("exit"))
+                {                    
+                    serialPort.close();
+                }
+                String str = jTextArea1.getText();                
+                ByteArrayInputStream bais = new ByteArrayInputStream(str.getBytes(StandardCharsets.UTF_8));
+                System.setIn(bais);
+                inputName = new Scanner(System.in); //get user name
+                name = inputName.nextLine();
+                name = name + 'e';
+                System.out.printf("%s",name);               
+                output.write(name.getBytes());           //sends the user name                
+                //serialPort.close();
+            }
+            catch (Exception e) {
+                System.err.println(e.toString());
+            }
+        }   
+    }
+    //end of serialEvent method
+    
+    //closePort method
+    private void close(){
+        if(serialPort!=null){
+            serialPort.close(); //close serial port
+        }
+        input = null;        //close input and output streams
+        output = null;
+    }
+    //main method
+    public void arduino() {
+        SerialTest myTest = new SerialTest();  //creates an object of the class
+        myTest.initialize();
+        myTest.portConnect();
+        System.out.println("Started");
+       // while(1>0);       //wait till any activity
+    }
+//end of main method
+// end of  SerialTest class
+}
+ 
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -549,7 +694,10 @@ public class Main extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton12ActionPerformed
 
     private void jButton13ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton13ActionPerformed
+        
+        jTextArea1.setText("");
         // Solving cube
+        
         topCross();
         topCorners();
         midLayer();
@@ -557,6 +705,7 @@ public class Main extends javax.swing.JFrame {
         bottomCorner();
         sideCorner();
         sideEdge();
+        executeArduino();
         jLabel3.setText(""+jTextArea1.getText().length());
     }//GEN-LAST:event_jButton13ActionPerformed
 
@@ -567,7 +716,9 @@ public class Main extends javax.swing.JFrame {
 
     private void jButton15ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton15ActionPerformed
         buf=jTextArea1.getText();
+        jTextArea1.setText("");
         execSequence();
+        executeArduino();
     }//GEN-LAST:event_jButton15ActionPerformed
 
     private void jButton16ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton16ActionPerformed
@@ -578,6 +729,7 @@ public class Main extends javax.swing.JFrame {
     private void jButton17ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton17ActionPerformed
         grd.repaint();
         this.repaint();
+        faceCount=0;
     }//GEN-LAST:event_jButton17ActionPerformed
 
     void F()
@@ -2747,7 +2899,8 @@ public class Main extends javax.swing.JFrame {
     // Array Declarations
     public static Color[][] G, W, B, Y, O, R;
     // Temporary variable
-    Color[] Src;
+    Color[] Src;    // Temporary variable
+    //Color[] Src;
     public static int faceCount=0;
     // Grid Declaration
     Grid grd;

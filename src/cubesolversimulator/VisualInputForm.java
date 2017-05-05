@@ -385,11 +385,12 @@ public class VisualInputForm extends javax.swing.JFrame {
                 .addGap(6, 6, 6)
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, 37, Short.MAX_VALUE)
-                    .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, 37, Short.MAX_VALUE)
-                    .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, 37, Short.MAX_VALUE)
-                    .addComponent(jButton4, javax.swing.GroupLayout.DEFAULT_SIZE, 37, Short.MAX_VALUE))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jButton4, javax.swing.GroupLayout.DEFAULT_SIZE, 37, Short.MAX_VALUE)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, 37, Short.MAX_VALUE)
+                        .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, 37, Short.MAX_VALUE)
+                        .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, 37, Short.MAX_VALUE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
@@ -748,7 +749,7 @@ public class VisualInputForm extends javax.swing.JFrame {
         cols=new int[9];
         for(int i=0;i<roi.size();i++){
             Mat ri=new Mat(blured, roi.get(i));
-            ri.convertTo(ri, -1, 1.5);
+            ri.convertTo(ri, -1, 1.0);
             Highgui.imwrite("extract"+i+".jpg", ri);
             Scalar clr = new Scalar(0,0,0);
             clr=Core.mean(ri);
@@ -757,6 +758,10 @@ public class VisualInputForm extends javax.swing.JFrame {
                 clr.val[0]=clr.val[0]-30;
             else
                 clr.val[0]=0;
+            //if(clr.val[2]<200)
+              //  clr.val[2]=clr.val[2]+20;
+            //else
+              //  clr.val[0]=0;
             System.out.println("new col: "+clr);
             getDistance(clr,i);
         }
@@ -768,7 +773,7 @@ public class VisualInputForm extends javax.swing.JFrame {
         int col=0;
         Scalar dist=new Scalar(0,0,0);
         //initialise standards dynamically        
-        Scalar std[]={new Scalar(200,0,0), new Scalar(0,200,0), new Scalar(0,0,200), new Scalar(0,160,200), new Scalar(0,80,200), new Scalar(255,255,255)};
+        Scalar std[]={new Scalar(200,0,0), new Scalar(0,200,0), new Scalar(0,0,185), new Scalar(0,160,200), new Scalar(0,80,200), new Scalar(200,200,200)};
         //blue, green, red, yellow, orange, white
         for(int i=0;i<std.length;i++)
         {
